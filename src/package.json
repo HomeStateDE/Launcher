@@ -1,0 +1,19 @@
+{
+  "name": "homestate-launcher",
+  "productName": "HomeState Launcher",
+  "version": "2.0.0",
+  "description": "HomeState.eu Launcher um die Anmeldung zu erleichter",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "HomeState",
+    "url": "https://homestate.eu"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../.erb/scripts/BabelRegister.js ../.erb/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "keytar": "^7.6.0"
+  }
+}
