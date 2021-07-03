@@ -13,14 +13,14 @@ const Main = () => {
   return (
     <>
       <Container>
-        <img style={{ paddingTop: '3em' }} src={wideLogo} />
+        <img style={{ paddingTop: '2em' }} src={wideLogo} />
         {config && config.statusMessage && config.statusMessage.show && (
           <Alert
             mb="1em"
             status={config.statusMessage.type}
             variant={config.statusMessage.variant}
           >
-            <AlertIcon /> ({config.statusMessage.show})
+            <AlertIcon />
             <div
               dangerouslySetInnerHTML={{ __html: config.statusMessage.content }}
             ></div>

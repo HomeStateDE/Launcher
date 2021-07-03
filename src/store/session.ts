@@ -41,8 +41,7 @@ export const {
 
 export const fetchConfig = (): AppThunk => async (dispatch) => {
   try {
-    var result = await axios.get<ConfigResponse>("https://launcher.homestate.eu/config.json");
-    console.log(result.data)
+    var result = await axios.get<ConfigResponse>("https://launcher.homestate.eu/config.json?time=" + new Date().getTime());
     dispatch(fetchConfigSuccess(result.data))
     localStorage.setItem("config", JSON.stringify(result.data));
   } catch (error) {

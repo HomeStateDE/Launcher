@@ -37,6 +37,10 @@ const LoggedIn = () => {
     fetchChangelogs();
   }, [])
 
+  useEffect(() => {
+    fetchChangelogs();
+  }, [config.statusMessage.show])
+
   const fetchChangelogs = async () => {
     try {
       setLoadingChangelogs(true);
@@ -45,7 +49,11 @@ const LoggedIn = () => {
 
       var updates = feedXml.querySelectorAll("item");
       var list = [];
-      for (let index = 0; index < 3; index++) {
+      var max = 3;
+      if (config && config.statusMessage.show)
+        max = 2;
+        
+      for (let index = 0; index < max; index++) {
         const element = updates[index];
         if (!element)
           return;
