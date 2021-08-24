@@ -1,8 +1,9 @@
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, CopyIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   Center,
+  Code,
   Container,
   Flex,
   IconButton,
@@ -16,6 +17,8 @@ import {
   ModalOverlay,
   Spacer,
   Text,
+  useClipboard,
+  useToast,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { shell } from 'electron';
@@ -32,10 +35,23 @@ const LoggedIn = () => {
   const [loadingChangelogs, setLoadingChangelogs] = useState(true);
   const [changelogs, setChangelogs] = useState<Changelog[]>();
   const [selectedChangelog, setSelectedChangelog] = useState<Changelog>();
+  const [showConnectInfo, setShowConnectInfo] = useState(false);
+  const { hasCopied, onCopy } = useClipboard(config?.connectUrl);
+  const toast = useToast();
 
   useEffect(() => {
     fetchChangelogs();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (hasCopied)
+      toast({
+        description: "URL kopiert",
+        status: "info",
+        position: "top",
+        duration: 2000,
+      })
+  }, [hasCopied])
 
   useEffect(() => {
     fetchChangelogs();
@@ -117,7 +133,8 @@ const LoggedIn = () => {
               colorScheme="orange"
               disabled={!!!config.connectUrl}
               onClick={() =>
-                shell.openExternal(`altv://connect/${config.connectUrl}`)
+                setShowConnectInfo(true)
+                // shell.openExternal(`altv://connect/${config.connectUrl}`)
               }
             >
               Jetzt spielen!
@@ -125,6 +142,25 @@ const LoggedIn = () => {
           </Center>
         </Flex>
       </Box>
+
+      <Modal isOpen={showConnectInfo} onClose={() => setShowConnectInfo(false)} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Mit dem HomeState-Server verbinden</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Leider dürfen wir euch keine Möglichkeit anbieten, das Spiel über einen Knopfdruck zu starten, weswegen ihr die Verbindung zum Server selbst aufbauen müsst.
+            <br/><br/>
+            <b>Wie komme ich auf den Server?</b><br/>
+            1. alt:V starten<br/>
+            2. Auf "Direkt verbinden" drücken, <Code onClick={onCopy}>{config?.connectUrl}</Code><IconButton onClick={onCopy} size="xs" variant="ghost" aria-label="Kopieren" icon={<CopyIcon />} /> als URL eingeben und verbinden<br/><br/>
+            
+            Alternativ kann in alt:V auch über die Serverliste verbunden werden.
+          </ModalBody>
+
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
 
       <Modal isOpen={!!selectedChangelog} onClose={() => setSelectedChangelog(undefined)} size="xl">
         <ModalOverlay />

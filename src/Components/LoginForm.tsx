@@ -149,18 +149,6 @@ const LoginForm = () => {
             >
               Anmelden
           </Button>
-            <Button
-              mt={4}
-              ml={4}
-              colorScheme="orange"
-              variant="ghost"
-              disabled={!!!config.connectUrl}
-              onClick={() =>
-                shell.openExternal(`altv://connect/${config.connectUrl}`)
-              }
-            >
-              Ohne Anmeldung spielen
-          </Button>
           </FormControl>
           <FormControl mt={2} id="lost password">
             <Link
